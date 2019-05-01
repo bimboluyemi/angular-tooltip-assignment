@@ -5,8 +5,12 @@ import { TooltipComponent } from './tooltipComponent';
     selector: '[tooltip]'
   })
   export class TooltipDirective {
-    // We can pass string, template or component
+    
     @Input('tooltip') content : string ;
+
+    public text: String;
+  
+    private buttonIsClicked = false;
     
     private componentRef : ComponentRef<TooltipComponent>;
   
@@ -16,9 +20,9 @@ import { TooltipComponent } from './tooltipComponent';
                  private resolver : ComponentFactoryResolver,
                  private vcr : ViewContainerRef ) {
     }
-
-    @HostListener('mouseenter')
-    mouseenter() {
+    
+    @HostListener('click')
+    onClick() {
         if ( this.componentRef ) return;
         const factory = this.resolver.resolveComponentFactory(TooltipComponent);
         const injector = ReflectiveInjector.resolveAndCreate([
@@ -30,18 +34,22 @@ import { TooltipComponent } from './tooltipComponent';
         }
         ]);
         this.componentRef = this.vcr.createComponent(factory, 0, injector, this.generateNgContent());
+        this.buttonIsClicked = true;
     }
-
+    
+    @HostListener('document:click')
+    onDocumentClick() {
+      if (!this.buttonIsClicked) {
+        this.destroy();
+      }
+      this.buttonIsClicked = false;
+    }
+    
     generateNgContent() {
         if ( typeof this.content === 'string' ) {
           const element = this.renderer.createText(this.content);
           return [ [ element ] ];
         }
-    }
-
-    @HostListener('mouseout')
-    mouseout() {
-        this.destroy();
     }
 
     destroy() {

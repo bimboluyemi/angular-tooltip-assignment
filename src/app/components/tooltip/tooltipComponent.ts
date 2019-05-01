@@ -2,22 +2,21 @@ import { Component, AfterViewInit, Input, HostListener, OnInit, ViewChild, Eleme
 import { TooltipContainerDirective } from './tooltipContainerDirective';
 
 @Component({
-    templateUrl: './tooltipComponent.html'
+    templateUrl: './tooltipComponent.html',
+    styleUrls: ['./tooltipComponent.scss']
 })
 export class TooltipComponent implements OnInit{
 
     top : string;
-  @ViewChild(TooltipContainerDirective, { read: ElementRef }) private tooltipContainer;
+    @ViewChild(TooltipContainerDirective, { read: ElementRef }) private tooltipContainer;
 
-  constructor( @Inject('tooltipConfig') private config ) {
-  }
+    constructor( @Inject('tooltipConfig') private config ) {}
 
-  ngOnInit() {
-    // For simplicity, we calculate only the top.
-    const { top } = this.config.host.getBoundingClientRect();
-    const { height } = this.tooltipContainer.nativeElement.getBoundingClientRect();
-    this.top = `${top - height}px`;
-  }
+    ngOnInit() {
+        const { top } = this.config.host.getBoundingClientRect();
+        const { height } = this.tooltipContainer.nativeElement.getBoundingClientRect();
+        this.top = `${top - height}px`;
+    }
 
 
 }
