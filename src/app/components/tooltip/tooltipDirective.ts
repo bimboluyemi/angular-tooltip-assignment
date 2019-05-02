@@ -5,7 +5,7 @@ import { TooltipComponent } from './tooltipComponent';
     selector: '[tooltip]'
   })
   export class TooltipDirective {
-    
+
     @Input('tooltip') content : string ;
 
     public text: String;
@@ -23,7 +23,8 @@ import { TooltipComponent } from './tooltipComponent';
     
     @HostListener('click')
     onClick() {
-        if ( this.componentRef ) return;
+        this.buttonIsClicked = true;
+        if ( this.componentRef && this.buttonIsClicked ) return;
         const factory = this.resolver.resolveComponentFactory(TooltipComponent);
         const injector = ReflectiveInjector.resolveAndCreate([
         {
@@ -34,7 +35,6 @@ import { TooltipComponent } from './tooltipComponent';
         }
         ]);
         this.componentRef = this.vcr.createComponent(factory, 0, injector, this.generateNgContent());
-        this.buttonIsClicked = true;
     }
     
     @HostListener('document:click')

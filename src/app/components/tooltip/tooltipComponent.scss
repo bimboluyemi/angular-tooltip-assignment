@@ -4,4 +4,23 @@
     color: white;
     border-radius: 5px;
     padding: 5px;
+    text-align: center;
+    width: auto;
+    max-width: 175px;
+    min-width: 50px;
+    margin-top: 7px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tooltip--holder::after {
+    content: "";
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    margin-left: auto;
+    margin-right: auto; 
+    border-width: 5px;
+    border-style: solid;
+    border-color: transparent transparent black transparent;
 }
